@@ -42,7 +42,7 @@ export { Prisma }
 
 // file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-darwin.dylib.node")
-path.join(process.cwd(), "app/generated/prisma/libquery_engine-darwin.dylib.node")
+path.join(process.cwd(), "src/app/generated/prisma/libquery_engine-darwin.dylib.node")
 
 /**
  * Model User

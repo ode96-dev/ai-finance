@@ -23,7 +23,7 @@ const config: runtime.GetPrismaClientConfig = {
       "value": "prisma-client"
     },
     "output": {
-      "value": "/Users/wilburforce/learning/ai-finance/app/generated/prisma",
+      "value": "/Users/wilburforce/learning/ai-finance/src/app/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -40,14 +40,13 @@ const config: runtime.GetPrismaClientConfig = {
     "sourceFilePath": "/Users/wilburforce/learning/ai-finance/prisma/schema.prisma",
     "isCustomOutput": true
   },
-  "relativePath": "../../../prisma",
+  "relativePath": "../../../../prisma",
   "clientVersion": "6.19.2",
   "engineVersion": "c2990dca591cba766e3b7ef5d9e8a84796e47ab7",
   "datasourceNames": [
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -56,8 +55,8 @@ const config: runtime.GetPrismaClientConfig = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id           String        @id @default(uuid())\n  clerkUserId  String        @unique\n  email        String        @unique\n  name         String?\n  imageUrl     String?\n  transactions Transaction[]\n  accounts     Account[]\n  budgets      Budget[]\n  createdAt    DateTime      @default(now())\n  updatedAt    DateTime      @updatedAt\n\n  @@map(\"users\")\n}\n\nmodel Account {\n  id           String        @id @default(uuid())\n  name         String\n  type         AccountType\n  balance      Decimal       @default(0)\n  isDefault    Boolean       @default(false)\n  userId       String\n  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)\n  transactions Transaction[]\n  createdAt    DateTime      @default(now())\n  updatedAt    DateTime      @updatedAt\n\n  @@index([userId])\n  @@map(\"accounts\")\n}\n\nmodel Transaction {\n  id                String             @id @default(uuid())\n  type              TransactionType\n  amount            Decimal\n  description       String?\n  date              DateTime\n  category          String\n  receiptUrl        String?\n  isRecurring       Boolean            @default(false)\n  recurringInterval RecurringInterval? // Only used if isRecurring is true\n  nextRecurringDate DateTime? // Next date for recurring transaction\n  lastProcessed     DateTime? // Last time this recurring transaction was processed\n  status            TransactionStatus  @default(COMPLETED)\n  userId            String\n  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)\n  accountId         String\n  account           Account            @relation(fields: [accountId], references: [id], onDelete: Cascade)\n  createdAt         DateTime           @default(now())\n  updatedAt         DateTime           @updatedAt\n\n  @@index([userId])\n  @@index([accountId])\n  @@map(\"transactions\")\n}\n\nmodel Budget {\n  id            String    @id @default(uuid())\n  amount        Decimal\n  lastAlertSent DateTime? // Track when the last alert was sent\n  userId        String    @unique\n  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)\n  createdAt     DateTime  @default(now())\n  updatedAt     DateTime  @updatedAt\n\n  @@index([userId])\n  @@map(\"budgets\")\n}\n\nenum TransactionType {\n  INCOME\n  EXPENSE\n}\n\nenum AccountType {\n  CURRENT\n  SAVINGS\n}\n\nenum TransactionStatus {\n  PENDING\n  COMPLETED\n  FAILED\n}\n\nenum RecurringInterval {\n  DAILY\n  WEEKLY\n  MONTHLY\n  YEARLY\n}\n",
-  "inlineSchemaHash": "20915d4ae984ff777819f1b2b6558199255bd34721f978d42028829cbbb1e8fa",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id           String        @id @default(uuid())\n  clerkUserId  String        @unique\n  email        String        @unique\n  name         String?\n  imageUrl     String?\n  transactions Transaction[]\n  accounts     Account[]\n  budgets      Budget[]\n  createdAt    DateTime      @default(now())\n  updatedAt    DateTime      @updatedAt\n\n  @@map(\"users\")\n}\n\nmodel Account {\n  id           String        @id @default(uuid())\n  name         String\n  type         AccountType\n  balance      Decimal       @default(0)\n  isDefault    Boolean       @default(false)\n  userId       String\n  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)\n  transactions Transaction[]\n  createdAt    DateTime      @default(now())\n  updatedAt    DateTime      @updatedAt\n\n  @@index([userId])\n  @@map(\"accounts\")\n}\n\nmodel Transaction {\n  id                String             @id @default(uuid())\n  type              TransactionType\n  amount            Decimal\n  description       String?\n  date              DateTime\n  category          String\n  receiptUrl        String?\n  isRecurring       Boolean            @default(false)\n  recurringInterval RecurringInterval? // Only used if isRecurring is true\n  nextRecurringDate DateTime? // Next date for recurring transaction\n  lastProcessed     DateTime? // Last time this recurring transaction was processed\n  status            TransactionStatus  @default(COMPLETED)\n  userId            String\n  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)\n  accountId         String\n  account           Account            @relation(fields: [accountId], references: [id], onDelete: Cascade)\n  createdAt         DateTime           @default(now())\n  updatedAt         DateTime           @updatedAt\n\n  @@index([userId])\n  @@index([accountId])\n  @@map(\"transactions\")\n}\n\nmodel Budget {\n  id            String    @id @default(uuid())\n  amount        Decimal\n  lastAlertSent DateTime? // Track when the last alert was sent\n  userId        String    @unique\n  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)\n  createdAt     DateTime  @default(now())\n  updatedAt     DateTime  @updatedAt\n\n  @@index([userId])\n  @@map(\"budgets\")\n}\n\nenum TransactionType {\n  INCOME\n  EXPENSE\n}\n\nenum AccountType {\n  CURRENT\n  SAVINGS\n}\n\nenum TransactionStatus {\n  PENDING\n  COMPLETED\n  FAILED\n}\n\nenum RecurringInterval {\n  DAILY\n  WEEKLY\n  MONTHLY\n  YEARLY\n}\n",
+  "inlineSchemaHash": "15c1e4b85b4972e1e42d81efca1476595cf2617d8e698e83f969620d7fecdfcc",
   "copyEngine": true,
   "runtimeDataModel": {
     "models": {},
