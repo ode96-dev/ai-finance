@@ -27,7 +27,7 @@ import { Switch } from "../ui/switch";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
-import useFetch from "../../../hooks/use-fetch";
+import useFetch from "../../hooks/use-fetch";
 import { createAccount } from "@/actions/create-account";
 import { accountSchema } from "@/lib/schema";
 
@@ -163,7 +163,9 @@ const CreateAccountDrawer = ({ children }: { children: React.ReactNode }) => {
                 </Label>
                 <Tabs
                   value={watchedType}
-                  onValueChange={(v) => setValue("type", v)}
+                  onValueChange={(v) =>
+                    setValue("type", v as "CURRENT" | "SAVINGS")
+                  }
                   className="w-full"
                 >
                   <TabsList className="grid w-full grid-cols-2 h-14 bg-slate-200/50 p-1.5 rounded-2xl">
@@ -255,7 +257,7 @@ const CreateAccountDrawer = ({ children }: { children: React.ReactNode }) => {
                 <Switch
                   id="isDefault"
                   checked={watchedIsDefault}
-                  onCheckedChange={(v) => setValue("isDefault", v)}
+                  onCheckedChange={(v) => setValue("isDefault", Boolean(v))}
                 />
               </div>
             </form>

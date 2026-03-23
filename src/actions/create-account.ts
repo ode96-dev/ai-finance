@@ -4,21 +4,21 @@ import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server"
 import { revalidatePath } from "next/cache";
 
-const serializeTransaction = (obj) => {
-    const serialized = { ...obj }
+const serializeTransaction = (obj: any) => {
+    const serialized: any = { ...obj }
 
-    if (obj.balance) {
+    if (obj?.balance && typeof obj.balance?.toNumber === "function") {
         serialized.balance = obj.balance.toNumber()
     }
 
-    if (obj.amount) {
+    if (obj?.amount && typeof obj.amount?.toNumber === "function") {
         serialized.amount = obj.amount.toNumber()
     }
 
     return serialized
 }
 
-export async function createAccount(data) {
+export async function createAccount(data: any) {
     try {
         const { userId } = await auth()
 
@@ -66,7 +66,7 @@ export async function createAccount(data) {
 
         return { success: true, data: serializedAccount };
 
-    } catch (error) {
+    } catch (error: unknown) {
         console.error(error)
         throw error
     }
